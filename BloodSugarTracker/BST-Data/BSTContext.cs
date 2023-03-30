@@ -13,9 +13,25 @@ namespace BST_Data
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
             DbPath = Path.Join(path, "readings.db");
+
+            using(var context = new BSTContext())
+            {
+                bool v = context.Database.EnsureCreated();
+                if (v)
+                    Console.Error.WriteLine("Database Could not be created");
+                else
+                    Console.WriteLine("Database Created and Seeded.");
+            }
         }
 
         // CREATES THE SQL DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source = {DbPath}");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Seed();
+        }
+
+        
     }
 }
