@@ -16,16 +16,16 @@ namespace BST_Data
 
             using(var context = new BSTContext())
             {
-                bool v = context.Database.EnsureCreated();
-                if (v)
-                    Console.Error.WriteLine("Database Could not be created");
-                else
+                bool isCreated = context.Database.EnsureCreated();
+                if (isCreated)                    
                     Console.WriteLine("Database Created and Seeded.");
+                else
+                    Console.Error.WriteLine("Database Could not be created");
             }
         }
 
         // CREATES THE SQL DB
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source = {DbPath}");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
